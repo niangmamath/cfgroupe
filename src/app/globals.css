@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #faf9f6;
+  --paper-dim: #f2f0ea;
+  --ink: #12181f;
+  --ink-soft: #4a5462;
+  --black: #0a0a0b;
+  --navy-950: #0d1830;
+  --navy-900: #16233f;
+  --navy-800: #1e2f57;
+  --navy-700: #2c4270;
+  --blue-600: #2e74b5;
+  --blue-100: #eaf1f8;
+  --cream: #efe7d4;
+  --cream-dim: #d9cfb4;
+  --hairline: rgba(18, 24, 31, 0.12);
+  --hairline-dark: rgba(239, 231, 212, 0.16);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-black: var(--black);
+  --color-navy-950: var(--navy-950);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-blue-600: var(--blue-600);
+  --color-blue-100: var(--blue-100);
+  --color-cream: var(--cream);
+  --color-cream-dim: var(--cream-dim);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+}
+
+* {
+  border-color: var(--hairline);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+}
+
+.kicker {
+  font-family: var(--font-sans), ui-sans-serif, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.numeral {
+  font-family: var(--font-display), ui-serif, serif;
+  font-variant-numeric: oldstyle-nums;
+  font-feature-settings: "onum" 1;
+}
+
+.link-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s ease;
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.hero-shadow {
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.55),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.grain {
+  background-image: radial-gradient(circle at 1px 1px, rgba(18, 24, 31, 0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
