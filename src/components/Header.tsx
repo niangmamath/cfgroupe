@@ -8,7 +8,7 @@ import Logo from "@/components/Logo";
 
 const navLinks = [
   ...entities.map((e) => ({ href: `/poles/${e.slug}`, label: e.name })),
-  { href: "/contact", label: "Contact" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -16,7 +16,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-hairline-dark bg-black/95 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-hairline-dark bg-navy-800">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 lg:px-8">
         <Link href="/" onClick={() => setOpen(false)} className="flex items-center">
           <Logo variant="light" className="h-11 w-auto" />

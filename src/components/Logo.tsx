@@ -16,7 +16,7 @@ export default function Logo({
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <Image src={src} alt="" className="h-full w-auto" priority />
       <span className={`font-display text-xl tracking-tight ${textColor}`}>
-        GROUPE
+        GROUP
       </span>
     </span>
   );

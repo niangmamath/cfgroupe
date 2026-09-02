@@ -18,11 +18,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "CFGroupe — Toute la chaîne de valeur digitale",
-    template: "%s — CFGroupe",
+    default: "CFConsulting — Toute la chaîne de valeur digitale",
+    template: "%s — CFConsulting",
   },
   description:
-    "CFGroupe couvre l'intégralité de la chaîne de valeur digitale, de la stratégie à l'exécution, à travers quatre pôles complémentaires : cadrage, exécution technique, logiciels métiers bancaires et solutions sectorielles.",
+    "CFConsulting couvre l'intégralité de la chaîne de valeur digitale, de la stratégie à l'exécution, à travers quatre pôles complémentaires : cadrage, exécution technique, logiciels métiers bancaires et solutions sectorielles.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

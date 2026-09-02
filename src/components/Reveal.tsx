@@ -18,6 +18,14 @@ export default function Reveal({
     const node = ref.current;
     if (!node) return;
 
+    // Already in (or near) the viewport on mount — show it immediately
+    // instead of waiting on an observer callback that may lag behind paint.
+    const rect = node.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

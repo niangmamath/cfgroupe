@@ -35,7 +35,7 @@ export default function Footer() {
             <p className="kicker text-paper/40">Entreprise</p>
             <ul className="mt-4 space-y-2.5">
               <li>
-                <Link href="/contact" className="link-underline text-sm text-paper/75 hover:text-paper">
+                <Link href="/#contact" className="link-underline text-sm text-paper/75 hover:text-paper">
                   Contact
                 </Link>
               </li>
@@ -46,8 +46,8 @@ export default function Footer() {
             <p className="kicker text-paper/40">Contact</p>
             <ul className="mt-4 space-y-2.5 text-sm text-paper/75">
               <li>
-                <a href="mailto:contact@cfgroupe.fr" className="link-underline hover:text-paper">
-                  contact@cfgroupe.fr
+                <a href="mailto:contact@cfconsulting.fr" className="link-underline hover:text-paper">
+                  contact@cfconsulting.fr
                 </a>
               </li>
               <li className="text-paper/50">+33 (0)1 XX XX XX XX</li>
@@ -57,8 +57,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col gap-2 border-t border-hairline-dark pt-6 text-xs text-paper/40 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} CFGroupe. Tous droits réservés.</p>
-          <p>CFGroupe · CFSolutions · CFSoft · CFTech</p>
+          <p>© {new Date().getFullYear()} CFConsulting. Tous droits réservés.</p>
+          <p>CFConsulting · CFSolutions · CFSoft · CFTech</p>
         </div>
       </div>
     </footer>

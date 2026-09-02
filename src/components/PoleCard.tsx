@@ -9,7 +9,7 @@ import {
 import type { Entity } from "@/lib/entities";
 
 const icons: Record<string, LucideIcon> = {
-  cfgroupe: Compass,
+  cfconsulting: Compass,
   cfsolutions: Cpu,
   cfsoft: LineChart,
   cftech: Layers,
@@ -17,7 +17,7 @@ const icons: Record<string, LucideIcon> = {
 
 function listFor(entity: Entity): string[] {
   if (entity.poles) return entity.poles.map((p) => p.name);
-  return entity.groups[0]?.items ?? [];
+  return entity.groups[0]?.items.map((item) => item.label) ?? [];
 }
 
 export default function PoleCard({ entity }: { entity: Entity }) {

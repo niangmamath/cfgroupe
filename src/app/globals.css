@@ -14,6 +14,7 @@
   --blue-100: #eaf1f8;
   --cream: #efe7d4;
   --cream-dim: #d9cfb4;
+  --contact-blue: #1c14d6;
   --hairline: rgba(18, 24, 31, 0.12);
   --hairline-dark: rgba(239, 231, 212, 0.16);
 }
@@ -32,6 +33,7 @@
   --color-blue-100: var(--blue-100);
   --color-cream: var(--cream);
   --color-cream-dim: var(--cream-dim);
+  --color-contact-blue: var(--contact-blue);
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
 }

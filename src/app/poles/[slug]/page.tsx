@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import {
+  Target,
+  Building2,
+  Wrench,
+  Layers,
+  Package,
+  FileType,
+  Rocket,
+  HeartPulse,
+  GraduationCap,
+  TrendingUp,
+  type LucideIcon,
+} from "lucide-react";
 import { entities, getEntity, getAdjacentEntities } from "@/lib/entities";
 import Reveal from "@/components/Reveal";
 
@@ -18,12 +31,36 @@ export async function generateMetadata({
   if (!entity) return {};
   return {
     title:
-      entity.name === "CFGroupe"
+      entity.name === "CFConsulting"
         ? entity.tagline
         : `${entity.name} — ${entity.tagline}`,
     description: entity.description,
   };
 }
+
+const poleIcons: Record<string, LucideIcon> = {
+  Healthtech: HeartPulse,
+  Edtech: GraduationCap,
+  Fintech: TrendingUp,
+};
+
+const groupIcons: Record<string, LucideIcon> = {
+  Missions: Target,
+  Secteurs: Building2,
+  Prestations: Wrench,
+  Domaines: Layers,
+  Produits: Package,
+  Formats: FileType,
+  Déploiement: Rocket,
+};
+
+function cardWidthClass(count: number) {
+  if (count <= 1) return "sm:w-[calc(70%-0.75rem)] lg:w-[calc(60%-0.75rem)]";
+  if (count === 2) return "sm:w-[calc(50%-0.75rem)] lg:w-[calc(46%-0.75rem)]";
+  return "sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]";
+}
+
+const cardBorder = "border-2 border-navy-950/70 sm:border sm:border-hairline";
 
 export default async function EntityPage({
   params,
@@ -37,20 +74,20 @@ export default async function EntityPage({
 
   return (
     <>
-      <section className="mx-auto max-w-4xl px-6 pt-20 pb-16 lg:px-8 lg:pt-28">
+      <section className="mx-auto max-w-4xl px-6 pt-8 pb-6 lg:px-8 lg:pt-10">
         <Reveal>
           <div className="flex items-center gap-4">
             <span className="numeral text-lg text-cream">{entity.number}</span>
             <span className="h-px flex-1 bg-hairline" />
             <span className="kicker text-ink-soft">{entity.kicker}</span>
           </div>
-          <h1 className="font-display mt-6 text-4xl leading-tight text-navy-950 sm:text-5xl">
+          <h1 className="font-display mt-4 text-3xl leading-tight text-navy-950 sm:text-4xl">
             {entity.name}
           </h1>
-          <p className="mt-3 text-lg font-medium text-blue-600">
+          <p className="mt-2 text-base font-medium text-blue-600">
             {entity.tagline}
           </p>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft">
             {entity.description}
           </p>
         </Reveal>
@@ -58,62 +95,85 @@ export default async function EntityPage({
 
       {entity.poles && (
         <section className="border-y border-hairline bg-paper-dim">
-          <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8">
-            <Reveal>
+          <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
+            <Reveal className="text-center">
               <p className="kicker text-blue-600">{entity.groupsLabel}</p>
-              <div className="mt-8 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-3">
-                {entity.poles.map((pole) => (
-                  <div
-                    key={pole.name}
-                    className="group bg-paper p-7 transition-colors hover:bg-paper-dim"
-                  >
-                    <h3 className="font-display text-xl text-navy-950">
-                      {pole.name}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-                      {pole.description}
-                    </p>
-                  </div>
-                ))}
+              <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
+                {entity.poles.map((pole) => {
+                  const Icon = poleIcons[pole.name] ?? Package;
+                  return (
+                    <div
+                      key={pole.name}
+                      className={`flex w-full flex-col rounded-2xl ${cardBorder} bg-paper p-8 text-left shadow-sm transition-shadow hover:shadow-md ${cardWidthClass(entity.poles!.length)}`}
+                    >
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
+                        <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
+                      </div>
+                      <h3 className="font-display mt-6 text-xl text-navy-950">
+                        {pole.name}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+                        {pole.description}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </Reveal>
           </div>
         </section>
       )}
 
-      {entity.groups.length > 0 && (
+      {(() => {
+        const filteredGroups = entity.groups.filter(
+          (g) => g.title !== "Modalités"
+        );
+        if (filteredGroups.length === 0) return null;
+        return (
         <section className="border-y border-hairline bg-paper-dim">
-          <div className="mx-auto max-w-4xl px-6 py-16 lg:px-8">
-            <Reveal>
+          <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
+            <Reveal className="text-center">
               <p className="kicker text-blue-600">{entity.groupsLabel}</p>
-              <div className="mt-8 grid gap-10 sm:grid-cols-3">
-                {entity.groups.map((group) => (
-                  <div key={group.title}>
-                    <p className="text-sm font-semibold text-navy-900">
-                      {group.title}
-                    </p>
-                    <ul className="mt-3 space-y-2">
-                      {group.items.map((item) => (
-                        <li
-                          key={item}
-                          className="text-sm leading-relaxed text-ink-soft"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+              <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
+                {filteredGroups.map((group) => {
+                    const Icon = groupIcons[group.title] ?? Package;
+                    return (
+                      <div
+                        key={group.title}
+                        className={`flex w-full flex-col rounded-2xl ${cardBorder} bg-paper p-8 text-left shadow-sm transition-shadow hover:shadow-md ${cardWidthClass(filteredGroups.length)}`}
+                      >
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
+                          <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
+                        </div>
+                        <h3 className="font-display mt-6 text-xl text-navy-950">
+                          {group.title}
+                        </h3>
+                        <ul className="mt-5 space-y-4">
+                          {group.items.map((item) => (
+                            <li key={item.label}>
+                              <p className="text-sm font-semibold text-navy-900">
+                                {item.label}
+                              </p>
+                              <p className="mt-1 text-sm leading-relaxed text-ink-soft">
+                                {item.description}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
               </div>
             </Reveal>
           </div>
         </section>
-      )}
+        );
+      })()}
 
       {/* Synergy callout, echoing the original doc's blue box */}
       <section className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
         <Reveal className="border border-blue-600/30 bg-blue-100 p-8 sm:p-10">
-          <p className="kicker text-navy-800">Synergie CFGroupe</p>
+          <p className="kicker text-navy-800">Synergie CFConsulting</p>
           <p className="mt-4 text-base leading-relaxed text-navy-900">
             {entity.synergy}
           </p>
