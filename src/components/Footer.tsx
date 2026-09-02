@@ -46,12 +46,19 @@ export default function Footer() {
             <p className="kicker text-paper/40">Contact</p>
             <ul className="mt-4 space-y-2.5 text-sm text-paper/75">
               <li>
-                <a href="mailto:contact@cfconsulting.fr" className="link-underline hover:text-paper">
-                  contact@cfconsulting.fr
+                <a
+                  href="mailto:abderrahmane.elbaghdadi@cfconsulting.ma"
+                  className="link-underline hover:text-paper"
+                >
+                  abderrahmane.elbaghdadi@cfconsulting.ma
                 </a>
               </li>
-              <li className="text-paper/50">+33 (0)1 XX XX XX XX</li>
-              <li className="text-paper/50">Adresse à venir</li>
+              <li>
+                <a href="tel:+212614384607" className="link-underline hover:text-paper">
+                  +212 6 14 38 46 07
+                </a>
+              </li>
+              <li className="text-paper/50">Maroc</li>
             </ul>
           </div>
         </div>

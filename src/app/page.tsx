@@ -114,10 +114,10 @@ export default function Home() {
                 </span>
                 <p className="text-sm font-medium text-paper/70">Email</p>
                 <a
-                  href="mailto:contact@cfconsulting.fr"
+                  href="mailto:abderrahmane.elbaghdadi@cfconsulting.ma"
                   className="link-underline text-lg text-paper"
                 >
-                  contact@cfconsulting.fr
+                  abderrahmane.elbaghdadi@cfconsulting.ma
                 </a>
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -126,10 +126,10 @@ export default function Home() {
                 </span>
                 <p className="text-sm font-medium text-paper/70">Téléphone</p>
                 <a
-                  href="tel:+33100000000"
+                  href="tel:+212614384607"
                   className="link-underline text-lg text-paper"
                 >
-                  +33 (0)1 XX XX XX XX
+                  +212 6 14 38 46 07
                 </a>
               </div>
             </div>
