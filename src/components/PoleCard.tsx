@@ -6,7 +6,7 @@ import {
   Layers,
   type LucideIcon,
 } from "lucide-react";
-import type { Entity } from "@/lib/entities";
+import type { Entity } from "@/lib/content-types";
 
 const icons: Record<string, LucideIcon> = {
   cfconsulting: Compass,

@@ -14,12 +14,12 @@ import {
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
-import { entities, getEntity, getAdjacentEntities } from "@/lib/entities";
+import { getEntity, getAdjacentEntities } from "@/lib/entities";
+import { getContent, getTheme } from "@/lib/store";
+import { sizeStyle } from "@/lib/typography";
 import Reveal from "@/components/Reveal";
 
-export function generateStaticParams() {
-  return entities.map((e) => ({ slug: e.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -27,7 +27,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const entity = getEntity(slug);
+  const { entities } = await getContent();
+  const entity = getEntity(entities, slug);
   if (!entity) return {};
   return {
     title:
@@ -68,9 +69,12 @@ export default async function EntityPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const entity = getEntity(slug);
+  const [{ entities }, theme] = await Promise.all([getContent(), getTheme()]);
+  const entity = getEntity(entities, slug);
   if (!entity) notFound();
-  const { prev, next } = getAdjacentEntities(slug);
+  const { prev, next } = getAdjacentEntities(entities, slug);
+  const fs = theme.typography.fieldSizes;
+  const base = `entities.${entity.slug}`;
 
   return (
     <>
@@ -79,15 +83,26 @@ export default async function EntityPage({
           <div className="flex items-center gap-4">
             <span className="numeral text-lg text-cream">{entity.number}</span>
             <span className="h-px flex-1 bg-hairline" />
-            <span className="kicker text-ink-soft">{entity.kicker}</span>
+            <span className="kicker text-ink-soft" style={sizeStyle(fs, `${base}.kicker`)}>
+              {entity.kicker}
+            </span>
           </div>
-          <h1 className="font-display mt-4 text-3xl leading-tight text-navy-950 sm:text-4xl">
+          <h1
+            className="font-display mt-4 text-3xl leading-tight text-navy-950 sm:text-4xl"
+            style={sizeStyle(fs, `${base}.name`)}
+          >
             {entity.name}
           </h1>
-          <p className="mt-2 text-base font-medium text-blue-600">
+          <p
+            className="mt-2 text-base font-medium text-blue-600"
+            style={sizeStyle(fs, `${base}.tagline`)}
+          >
             {entity.tagline}
           </p>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft">
+          <p
+            className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft"
+            style={sizeStyle(fs, `${base}.description`)}
+          >
             {entity.description}
           </p>
         </Reveal>
@@ -97,10 +112,13 @@ export default async function EntityPage({
         <section className="border-y border-hairline bg-paper-dim">
           <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
             <Reveal className="text-center">
-              <p className="kicker text-blue-600">{entity.groupsLabel}</p>
+              <p className="kicker text-blue-600" style={sizeStyle(fs, `${base}.groupsLabel`)}>
+                {entity.groupsLabel}
+              </p>
               <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
-                {entity.poles.map((pole) => {
+                {entity.poles.map((pole, poleIndex) => {
                   const Icon = poleIcons[pole.name] ?? Package;
+                  const poleBase = `${base}.poles.${poleIndex}`;
                   return (
                     <div
                       key={pole.name}
@@ -109,10 +127,16 @@ export default async function EntityPage({
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
                         <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
                       </div>
-                      <h3 className="font-display mt-6 text-xl text-navy-950">
+                      <h3
+                        className="font-display mt-6 text-xl text-navy-950"
+                        style={sizeStyle(fs, `${poleBase}.name`)}
+                      >
                         {pole.name}
                       </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+                      <p
+                        className="mt-3 text-sm leading-relaxed text-ink-soft"
+                        style={sizeStyle(fs, `${poleBase}.description`)}
+                      >
                         {pole.description}
                       </p>
                     </div>
@@ -125,18 +149,21 @@ export default async function EntityPage({
       )}
 
       {(() => {
-        const filteredGroups = entity.groups.filter(
-          (g) => g.title !== "Modalités"
-        );
+        const filteredGroups = entity.groups
+          .map((g, i) => ({ ...g, originalIndex: i }))
+          .filter((g) => g.title !== "Modalités");
         if (filteredGroups.length === 0) return null;
         return (
         <section className="border-y border-hairline bg-paper-dim">
           <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
             <Reveal className="text-center">
-              <p className="kicker text-blue-600">{entity.groupsLabel}</p>
+              <p className="kicker text-blue-600" style={sizeStyle(fs, `${base}.groupsLabel`)}>
+                {entity.groupsLabel}
+              </p>
               <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
                 {filteredGroups.map((group) => {
                     const Icon = groupIcons[group.title] ?? Package;
+                    const groupBase = `${base}.groups.${group.originalIndex}`;
                     return (
                       <div
                         key={group.title}
@@ -145,20 +172,32 @@ export default async function EntityPage({
                         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
                           <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
                         </div>
-                        <h3 className="font-display mt-6 text-xl text-navy-950">
+                        <h3
+                          className="font-display mt-6 text-xl text-navy-950"
+                          style={sizeStyle(fs, `${groupBase}.title`)}
+                        >
                           {group.title}
                         </h3>
                         <ul className="mt-5 space-y-4">
-                          {group.items.map((item) => (
-                            <li key={item.label}>
-                              <p className="text-sm font-semibold text-navy-900">
-                                {item.label}
-                              </p>
-                              <p className="mt-1 text-sm leading-relaxed text-ink-soft">
-                                {item.description}
-                              </p>
-                            </li>
-                          ))}
+                          {group.items.map((item, itemIndex) => {
+                            const itemBase = `${groupBase}.items.${itemIndex}`;
+                            return (
+                              <li key={item.label}>
+                                <p
+                                  className="text-sm font-semibold text-navy-900"
+                                  style={sizeStyle(fs, `${itemBase}.label`)}
+                                >
+                                  {item.label}
+                                </p>
+                                <p
+                                  className="mt-1 text-sm leading-relaxed text-ink-soft"
+                                  style={sizeStyle(fs, `${itemBase}.description`)}
+                                >
+                                  {item.description}
+                                </p>
+                              </li>
+                            );
+                          })}
                         </ul>
                       </div>
                     );
@@ -174,7 +213,10 @@ export default async function EntityPage({
       <section className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
         <Reveal className="border border-blue-600/30 bg-blue-100 p-8 sm:p-10">
           <p className="kicker text-navy-800">Synergie CFConsulting</p>
-          <p className="mt-4 text-base leading-relaxed text-navy-900">
+          <p
+            className="mt-4 text-base leading-relaxed text-navy-900"
+            style={sizeStyle(fs, `${base}.synergy`)}
+          >
             {entity.synergy}
           </p>
         </Reveal>

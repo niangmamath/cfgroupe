@@ -3,17 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { entities } from "@/lib/entities";
+import type { Entity } from "@/lib/content-types";
 import Logo from "@/components/Logo";
 
-const navLinks = [
-  ...entities.map((e) => ({ href: `/poles/${e.slug}`, label: e.name })),
-  { href: "/#contact", label: "Contact" },
-];
-
-export default function Header() {
+export default function Header({ entities }: { entities: Entity[] }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const navLinks = [
+    ...entities.map((e) => ({ href: `/poles/${e.slug}`, label: e.name })),
+    { href: "/#contact", label: "Contact" },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-hairline-dark bg-navy-800">
