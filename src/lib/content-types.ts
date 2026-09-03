@@ -34,6 +34,7 @@ export type TrustedLogo = {
   id: string;
   image: string;
   alt: string;
+  scale: number;
 };
 
 export type SectionOrderEntry =

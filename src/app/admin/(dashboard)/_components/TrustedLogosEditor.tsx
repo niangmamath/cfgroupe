@@ -30,7 +30,12 @@ export function TrustedLogosEditor({
       if (!res.ok) throw new Error(data.error || "Échec de l'upload.");
       onLogosChange([
         ...logos,
-        { id: crypto.randomUUID(), image: data.url, alt: file.name.replace(/\.[^.]+$/, "") },
+        {
+          id: crypto.randomUUID(),
+          image: data.url,
+          alt: file.name.replace(/\.[^.]+$/, ""),
+          scale: 1,
+        },
       ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue.");
@@ -74,6 +79,18 @@ export function TrustedLogosEditor({
                 onChange={(v) => update(logo.id, { alt: v })}
               />
             </div>
+            <label className="block w-20 shrink-0">
+              <span className="text-sm font-medium text-navy-900">Taille</span>
+              <input
+                type="number"
+                step={0.1}
+                min={0.3}
+                max={3}
+                value={logo.scale || 1}
+                onChange={(e) => update(logo.id, { scale: parseFloat(e.target.value) || 1 })}
+                className="mt-1.5 w-full rounded-lg border border-hairline bg-paper px-2 py-2.5 text-sm text-ink focus:border-blue-600 focus:outline-none"
+              />
+            </label>
             <div className="flex shrink-0 flex-col gap-1">
               <button
                 type="button"

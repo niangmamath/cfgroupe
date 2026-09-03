@@ -13,7 +13,10 @@ export default function TrustedLogosMarquee({
 }) {
   if (logos.length === 0) return null;
 
-  const doubled = [...logos, ...logos];
+  // Repeated 4x (not just doubled) so the track stays wider than the
+  // viewport on large/ultra-wide screens too — otherwise the loop point
+  // becomes visible as a gap once the content runs out before wrapping.
+  const repeated = [...logos, ...logos, ...logos, ...logos];
 
   return (
     <section className="py-8">
@@ -29,13 +32,14 @@ export default function TrustedLogosMarquee({
 
         <div className="relative mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <div className="marquee-track flex w-max items-center gap-16">
-            {doubled.map((logo, i) => (
+            {repeated.map((logo, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={`${logo.id}-${i}`}
                 src={logo.image}
                 alt={logo.alt}
-                className="h-12 w-auto shrink-0 object-contain"
+                className="w-auto shrink-0 object-contain"
+                style={{ height: `${3 * (logo.scale || 1)}rem` }}
               />
             ))}
           </div>
