@@ -2,9 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import type { SiteContent, SiteTheme, Entity, Group, Pole } from "@/lib/content-types";
+import type {
+  SiteContent,
+  SiteTheme,
+  Entity,
+  Group,
+  Pole,
+  CustomSection,
+} from "@/lib/content-types";
 import { Field, TextAreaField, SectionCard, SaveBar } from "../../_components/FormControls";
 import { SectionsEditor } from "../../_components/SectionsEditor";
+import { SectionOrderEditor } from "../../_components/SectionOrderEditor";
 
 export default function AdminEntityEditPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -47,6 +55,21 @@ export default function AdminEntityEditPage() {
 
   function updateEntity(patch: Partial<Entity>) {
     setEntity((prev) => (prev ? { ...prev, ...patch } : prev));
+  }
+
+  function updateEntitySections(nextSections: CustomSection[]) {
+    setEntity((prev) => {
+      if (!prev) return prev;
+      const prevIds = new Set(prev.sections.map((s) => s.id));
+      const nextIds = new Set(nextSections.map((s) => s.id));
+      const order: typeof prev.sectionOrder = [
+        ...prev.sectionOrder.filter((e) => e.kind !== "custom" || nextIds.has(e.id)),
+        ...nextSections
+          .filter((s) => !prevIds.has(s.id))
+          .map((s) => ({ kind: "custom" as const, id: s.id })),
+      ];
+      return { ...prev, sections: nextSections, sectionOrder: order };
+    });
   }
 
   function updateGroup(index: number, patch: Partial<Group>) {
@@ -219,6 +242,23 @@ export default function AdminEntityEditPage() {
           />
         </SectionCard>
 
+        <div>
+          <h2 className="font-display text-xl text-navy-950">
+            Ordre des sections (page de ce pôle)
+          </h2>
+          <p className="mt-2 text-sm text-ink-soft">
+            S&apos;affichent après le titre et la description, avant la
+            navigation précédent/suivant.
+          </p>
+          <div className="mt-4">
+            <SectionOrderEditor
+              order={entity.sectionOrder}
+              customSections={entity.sections}
+              onChange={(next) => updateEntity({ sectionOrder: next })}
+            />
+          </div>
+        </div>
+
         {entity.groups.map((group, groupIndex) => {
           const groupBase = `${base}.groups.${groupIndex}`;
           return (
@@ -353,13 +393,13 @@ export default function AdminEntityEditPage() {
           Sections personnalisées (page de ce pôle)
         </h2>
         <p className="mt-2 text-ink-soft">
-          S&apos;affichent sur la page &laquo; {entity.name} &raquo;, après la
-          synergie et avant la navigation précédent/suivant.
+          Une fois ajoutée, une section apparaît dans le panneau &laquo; Ordre
+          des sections &raquo; ci-dessus, où tu peux la positionner où tu veux.
         </p>
         <div className="mt-6">
           <SectionsEditor
             sections={entity.sections}
-            onChange={(next) => updateEntity({ sections: next })}
+            onChange={updateEntitySections}
             keyPrefix={`${base}.sections`}
             sizeOf={sizeOf}
             onSizeChange={setSize}

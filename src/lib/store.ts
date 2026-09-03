@@ -50,9 +50,20 @@ export async function getContent(): Promise<SiteContent> {
   if (!stored) return defaultContent;
   // shallow-merge top-level keys so newly-added fields still get defaults
   const merged = { ...defaultContent, ...stored };
-  // content saved before `sections`/`homeSections` existed won't have them
+  // deep-merge hero so content saved before `mediaPublished` existed still gets it
+  merged.hero = { ...defaultContent.hero, ...stored.hero };
+  // content saved before `sections`/`sectionOrder`/`homeSections` existed won't have them
   merged.homeSections = merged.homeSections ?? [];
-  merged.entities = merged.entities.map((e) => ({ ...e, sections: e.sections ?? [] }));
+  merged.homeSectionOrder = merged.homeSectionOrder ?? defaultContent.homeSectionOrder;
+  merged.entities = merged.entities.map((e) => ({
+    ...e,
+    sections: e.sections ?? [],
+    sectionOrder:
+      e.sectionOrder ?? [
+        { kind: "fixed", key: "groups" },
+        { kind: "fixed", key: "synergy" },
+      ],
+  }));
   return merged;
 }
 

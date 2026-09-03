@@ -9,7 +9,15 @@ export type CustomSection = {
   image: string | null;
   video: string | null;
   mediaPosition: "left" | "right";
+  mediaPublished: boolean;
 };
+
+export type HomeFixedSectionKey = "hero" | "poles" | "filConducteur" | "contact";
+export type EntityFixedSectionKey = "groups" | "synergy";
+
+export type SectionOrderEntry =
+  | { kind: "fixed"; key: HomeFixedSectionKey | EntityFixedSectionKey }
+  | { kind: "custom"; id: string };
 
 export type Entity = {
   slug: string;
@@ -24,6 +32,7 @@ export type Entity = {
   groups: Group[];
   poles?: Pole[];
   sections: CustomSection[];
+  sectionOrder: SectionOrderEntry[];
 };
 
 export type SiteContent = {
@@ -35,6 +44,7 @@ export type SiteContent = {
     ctaSecondaryLabel: string;
     backgroundImage: string | null;
     backgroundVideo: string | null;
+    mediaPublished: boolean;
   };
   polesSection: {
     kicker: string;
@@ -60,6 +70,7 @@ export type SiteContent = {
     copyrightName: string;
   };
   homeSections: CustomSection[];
+  homeSectionOrder: SectionOrderEntry[];
   entities: Entity[];
 };
 

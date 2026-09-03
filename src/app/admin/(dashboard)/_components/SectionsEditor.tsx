@@ -12,6 +12,7 @@ function newSection(): CustomSection {
     image: null,
     video: null,
     mediaPosition: "right",
+    mediaPublished: true,
   };
 }
 
@@ -36,44 +37,23 @@ export function SectionsEditor({
     onChange(sections.filter((s) => s.id !== id));
   }
 
-  function move(id: string, dir: -1 | 1) {
-    const idx = sections.findIndex((s) => s.id === id);
-    const swapIdx = idx + dir;
-    if (swapIdx < 0 || swapIdx >= sections.length) return;
-    const next = [...sections];
-    [next[idx], next[swapIdx]] = [next[swapIdx], next[idx]];
-    onChange(next);
-  }
-
   function add() {
     onChange([...sections, newSection()]);
   }
 
   return (
     <div className="space-y-6">
+      <p className="text-xs text-ink-soft">
+        La position de chaque section dans la page se règle dans le panneau
+        &laquo; Ordre des sections &raquo; ci-dessus.
+      </p>
       {sections.map((section, i) => (
         <SectionCard key={section.id} title={`Section personnalisée ${i + 1}`}>
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => move(section.id, -1)}
-              disabled={i === 0}
-              className="rounded border border-hairline px-2 py-1 text-xs text-ink-soft disabled:opacity-30"
-            >
-              ↑ Monter
-            </button>
-            <button
-              type="button"
-              onClick={() => move(section.id, 1)}
-              disabled={i === sections.length - 1}
-              className="rounded border border-hairline px-2 py-1 text-xs text-ink-soft disabled:opacity-30"
-            >
-              ↓ Descendre
-            </button>
+          <div className="flex justify-end">
             <button
               type="button"
               onClick={() => remove(section.id)}
-              className="ml-auto text-xs text-ink-soft hover:text-red-600"
+              className="text-xs text-ink-soft hover:text-red-600"
             >
               Supprimer cette section
             </button>
@@ -112,6 +92,8 @@ export function SectionsEditor({
             imageUrl={section.image}
             videoUrl={section.video}
             onChange={({ image, video }) => update(section.id, { image, video })}
+            published={section.mediaPublished}
+            onPublishedChange={(v) => update(section.id, { mediaPublished: v })}
           />
         </SectionCard>
       ))}

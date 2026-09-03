@@ -7,15 +7,20 @@ export function MediaUpload({
   imageUrl,
   videoUrl,
   onChange,
+  published,
+  onPublishedChange,
 }: {
   label: string;
   imageUrl: string | null;
   videoUrl: string | null;
   onChange: (next: { image: string | null; video: string | null }) => void;
+  published?: boolean;
+  onPublishedChange?: (v: boolean) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hasMedia = Boolean(imageUrl || videoUrl);
 
   async function handleFile(file: File) {
     setUploading(true);
@@ -47,7 +52,11 @@ export function MediaUpload({
       <span className="text-sm font-medium text-navy-900">{label}</span>
 
       <div className="mt-2 flex items-center gap-4">
-        <div className="flex h-24 w-40 items-center justify-center overflow-hidden rounded-lg border border-hairline bg-paper-dim">
+        <div
+          className={`flex h-24 w-40 items-center justify-center overflow-hidden rounded-lg border border-hairline bg-paper-dim ${
+            hasMedia && published === false ? "opacity-40" : ""
+          }`}
+        >
           {videoUrl ? (
             <video src={videoUrl} className="h-full w-full object-cover" muted />
           ) : imageUrl ? (
@@ -67,7 +76,7 @@ export function MediaUpload({
           >
             {uploading ? "Envoi..." : "Choisir un fichier"}
           </button>
-          {(imageUrl || videoUrl) && (
+          {hasMedia && (
             <button
               type="button"
               onClick={() => onChange({ image: null, video: null })}
@@ -76,20 +85,18 @@ export function MediaUpload({
               Retirer le média
             </button>
           )}
+          {hasMedia && onPublishedChange && (
+            <label className="flex items-center gap-1.5 text-xs text-ink-soft">
+              <input
+                type="checkbox"
+                checked={published !== false}
+                onChange={(e) => onPublishedChange(e.target.checked)}
+              />
+              {published === false ? "Masqué sur le site" : "Publié sur le site"}
+            </label>
+          )}
         </div>
       </div>
-
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*,video/*"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handleFile(file);
-          e.target.value = "";
-        }}
-      />
 
       {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
     </div>

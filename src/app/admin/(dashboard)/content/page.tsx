@@ -5,6 +5,8 @@ import type { SiteContent, SiteTheme } from "@/lib/content-types";
 import { Field, TextAreaField, SectionCard, SaveBar } from "../_components/FormControls";
 import { MediaUpload } from "../_components/MediaUpload";
 import { SectionsEditor } from "../_components/SectionsEditor";
+import { SectionOrderEditor } from "../_components/SectionOrderEditor";
+import type { CustomSection } from "@/lib/content-types";
 
 export default function AdminContentPage() {
   const [content, setContent] = useState<SiteContent | null>(null);
@@ -33,6 +35,30 @@ export default function AdminContentPage() {
       if (v == null) delete fieldSizes[key];
       else fieldSizes[key] = v;
       return { ...prev, typography: { ...prev.typography, fieldSizes } };
+    });
+  }
+
+  function updateHomeSections(nextSections: CustomSection[]) {
+    setContent((prev) => {
+      if (!prev) return prev;
+      const prevIds = new Set(prev.homeSections.map((s) => s.id));
+      const nextIds = new Set(nextSections.map((s) => s.id));
+      let order = prev.homeSectionOrder.filter(
+        (e) => e.kind !== "custom" || nextIds.has(e.id)
+      );
+      for (const s of nextSections) {
+        if (!prevIds.has(s.id)) {
+          const contactIdx = order.findIndex(
+            (e) => e.kind === "fixed" && e.key === "contact"
+          );
+          const entry = { kind: "custom" as const, id: s.id };
+          order =
+            contactIdx >= 0
+              ? [...order.slice(0, contactIdx), entry, ...order.slice(contactIdx)]
+              : [...order, entry];
+        }
+      }
+      return { ...prev, homeSections: nextSections, homeSectionOrder: order };
     });
   }
 
@@ -76,7 +102,21 @@ export default function AdminContentPage() {
         (laisser vide pour la taille par défaut).
       </p>
 
-      <div className="mt-8 space-y-6">
+      <div className="mt-8">
+        <h2 className="font-display text-2xl text-navy-950">Ordre des sections</h2>
+        <p className="mt-2 text-ink-soft">
+          L&apos;ordre d&apos;affichage des sections sur la page d&apos;accueil.
+        </p>
+        <div className="mt-4">
+          <SectionOrderEditor
+            order={content.homeSectionOrder}
+            customSections={content.homeSections}
+            onChange={(next) => setContent({ ...content, homeSectionOrder: next })}
+          />
+        </div>
+      </div>
+
+      <div className="mt-10 space-y-6">
         <SectionCard title="Héro">
           <Field
             label="Titre (partie 1)"
@@ -144,6 +184,10 @@ export default function AdminContentPage() {
                   backgroundVideo: video,
                 },
               })
+            }
+            published={content.hero.mediaPublished}
+            onPublishedChange={(v) =>
+              setContent({ ...content, hero: { ...content.hero, mediaPublished: v } })
             }
           />
         </SectionCard>
@@ -334,13 +378,13 @@ export default function AdminContentPage() {
           Sections personnalisées (page d&apos;accueil)
         </h2>
         <p className="mt-2 text-ink-soft">
-          S&apos;affichent entre &laquo; Le fil conducteur &raquo; et
-          &laquo; Contact &raquo;, dans l&apos;ordre choisi ci-dessous.
+          Une fois ajoutée, une section apparaît dans le panneau &laquo; Ordre
+          des sections &raquo; ci-dessus, où tu peux la positionner où tu veux.
         </p>
         <div className="mt-6">
           <SectionsEditor
             sections={content.homeSections}
-            onChange={(next) => setContent({ ...content, homeSections: next })}
+            onChange={updateHomeSections}
             keyPrefix="homeSections"
             sizeOf={sizeOf}
             onSizeChange={setSize}

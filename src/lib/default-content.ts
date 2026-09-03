@@ -10,6 +10,7 @@ export const defaultContent: SiteContent = {
     ctaSecondaryLabel: "Discutons de votre projet",
     backgroundImage: null,
     backgroundVideo: null,
+    mediaPublished: true,
   },
   polesSection: {
     kicker: "Nos pôles",
@@ -39,6 +40,12 @@ export const defaultContent: SiteContent = {
     copyrightName: "CFConsulting",
   },
   homeSections: [],
+  homeSectionOrder: [
+    { kind: "fixed", key: "hero" },
+    { kind: "fixed", key: "poles" },
+    { kind: "fixed", key: "filConducteur" },
+    { kind: "fixed", key: "contact" },
+  ],
   entities: [
     {
       slug: "cfconsulting",
@@ -53,6 +60,10 @@ export const defaultContent: SiteContent = {
         "CFConsulting est le point d'entrée stratégique sur la plupart des missions. Il alimente directement l'exécution du pôle CFSolutions, l'adoption des produits CFSoft dans le secteur bancaire, et le déploiement des solutions CFTech dans les secteurs en diversification.",
       groupsLabel: "Modes d'intervention",
       sections: [],
+      sectionOrder: [
+        { kind: "fixed", key: "groups" },
+        { kind: "fixed", key: "synergy" },
+      ],
       groups: [
         {
           title: "Missions",
@@ -124,6 +135,10 @@ export const defaultContent: SiteContent = {
         "CFSolutions absorbe la complexité que le pôle CFConsulting a cadrée en amont, ou répond directement à un besoin client sans passage préalable. C'est le pôle qui rend crédible la promesse de bout en bout de CFConsulting.",
       groupsLabel: "Domaines & modalités",
       sections: [],
+      sectionOrder: [
+        { kind: "fixed", key: "groups" },
+        { kind: "fixed", key: "synergy" },
+      ],
       groups: [
         {
           title: "Prestations",
@@ -206,6 +221,10 @@ export const defaultContent: SiteContent = {
         "Cohérence directe avec l'ADN bancaire de CFConsulting — un client accompagné sur sa transformation digitale peut adopter les produits CFSoft plutôt que redévelopper ces briques via le pôle CFSolutions.",
       groupsLabel: "Produits & déploiement",
       sections: [],
+      sectionOrder: [
+        { kind: "fixed", key: "groups" },
+        { kind: "fixed", key: "synergy" },
+      ],
       groups: [
         {
           title: "Produits",
@@ -268,6 +287,10 @@ export const defaultContent: SiteContent = {
         "CFTech incarne concrètement la diversification sectorielle portée par CFConsulting, en apportant des produits déjà adaptés aux contraintes réglementaires et métier de la santé, de l'éducation et de la finance.",
       groupsLabel: "Trois pôles produits",
       sections: [],
+      sectionOrder: [
+        { kind: "fixed", key: "groups" },
+        { kind: "fixed", key: "synergy" },
+      ],
       groups: [],
       poles: [
         {

@@ -14,7 +14,12 @@ export default function CustomSections({
   return (
     <>
       {sections
-        .filter((s) => s.title.trim() || s.text.trim() || s.image || s.video)
+        .filter(
+          (s) =>
+            s.title.trim() ||
+            s.text.trim() ||
+            (s.mediaPublished !== false && (s.image || s.video))
+        )
         .map((section) => (
           <section key={section.id} className="mx-auto max-w-6xl px-6 py-16 lg:px-8">
             <Reveal>
@@ -34,7 +39,7 @@ export default function CustomSections({
                   </p>
                 </div>
                 <div className={section.mediaPosition === "left" ? "sm:order-1" : ""}>
-                  {section.video ? (
+                  {section.mediaPublished !== false && section.video ? (
                     <video
                       src={section.video}
                       autoPlay
@@ -43,7 +48,7 @@ export default function CustomSections({
                       playsInline
                       className="aspect-[4/3] w-full rounded-2xl object-cover"
                     />
-                  ) : section.image ? (
+                  ) : section.mediaPublished !== false && section.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={section.image}

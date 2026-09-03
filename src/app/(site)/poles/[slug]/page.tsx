@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -77,6 +78,126 @@ export default async function EntityPage({
   const fs = theme.typography.fieldSizes;
   const base = `entities.${entity.slug}`;
 
+  const groupsBlock = entity.poles ? (
+    <section key="groups" className="border-y border-hairline bg-paper-dim">
+      <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
+        <Reveal className="text-center">
+          <p className="kicker text-blue-600" style={sizeStyle(fs, `${base}.groupsLabel`)}>
+            {entity.groupsLabel}
+          </p>
+          <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
+            {entity.poles.map((pole, poleIndex) => {
+              const Icon = poleIcons[pole.name] ?? Package;
+              const poleBase = `${base}.poles.${poleIndex}`;
+              return (
+                <div
+                  key={pole.name}
+                  className={`flex w-full flex-col rounded-2xl ${cardBorder} bg-paper p-8 text-left shadow-sm transition-shadow hover:shadow-md ${cardWidthClass(entity.poles!.length)}`}
+                >
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
+                    <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
+                  </div>
+                  <h3
+                    className="font-display mt-6 text-xl text-navy-950"
+                    style={sizeStyle(fs, `${poleBase}.name`)}
+                  >
+                    {pole.name}
+                  </h3>
+                  <p
+                    className="mt-3 text-sm leading-relaxed text-ink-soft"
+                    style={sizeStyle(fs, `${poleBase}.description`)}
+                  >
+                    {pole.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  ) : (
+    (() => {
+      const filteredGroups = entity.groups
+        .map((g, i) => ({ ...g, originalIndex: i }))
+        .filter((g) => g.title !== "Modalités");
+      if (filteredGroups.length === 0) return null;
+      return (
+        <section key="groups" className="border-y border-hairline bg-paper-dim">
+          <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
+            <Reveal className="text-center">
+              <p className="kicker text-blue-600" style={sizeStyle(fs, `${base}.groupsLabel`)}>
+                {entity.groupsLabel}
+              </p>
+              <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
+                {filteredGroups.map((group) => {
+                  const Icon = groupIcons[group.title] ?? Package;
+                  const groupBase = `${base}.groups.${group.originalIndex}`;
+                  return (
+                    <div
+                      key={group.title}
+                      className={`flex w-full flex-col rounded-2xl ${cardBorder} bg-paper p-8 text-left shadow-sm transition-shadow hover:shadow-md ${cardWidthClass(filteredGroups.length)}`}
+                    >
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
+                        <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
+                      </div>
+                      <h3
+                        className="font-display mt-6 text-xl text-navy-950"
+                        style={sizeStyle(fs, `${groupBase}.title`)}
+                      >
+                        {group.title}
+                      </h3>
+                      <ul className="mt-5 space-y-4">
+                        {group.items.map((item, itemIndex) => {
+                          const itemBase = `${groupBase}.items.${itemIndex}`;
+                          return (
+                            <li key={item.label}>
+                              <p
+                                className="text-sm font-semibold text-navy-900"
+                                style={sizeStyle(fs, `${itemBase}.label`)}
+                              >
+                                {item.label}
+                              </p>
+                              <p
+                                className="mt-1 text-sm leading-relaxed text-ink-soft"
+                                style={sizeStyle(fs, `${itemBase}.description`)}
+                              >
+                                {item.description}
+                              </p>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      );
+    })()
+  );
+
+  const synergyBlock = (
+    <section key="synergy" className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
+      <Reveal className="border border-blue-600/30 bg-blue-100 p-8 sm:p-10">
+        <p className="kicker text-navy-800">Synergie CFConsulting</p>
+        <p
+          className="mt-4 text-base leading-relaxed text-navy-900"
+          style={sizeStyle(fs, `${base}.synergy`)}
+        >
+          {entity.synergy}
+        </p>
+      </Reveal>
+    </section>
+  );
+
+  const fixedSections: Record<string, React.ReactNode> = {
+    groups: groupsBlock,
+    synergy: synergyBlock,
+  };
+
   return (
     <>
       <section className="mx-auto max-w-4xl px-6 pt-8 pb-6 lg:px-8 lg:pt-10">
@@ -109,125 +230,21 @@ export default async function EntityPage({
         </Reveal>
       </section>
 
-      {entity.poles && (
-        <section className="border-y border-hairline bg-paper-dim">
-          <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
-            <Reveal className="text-center">
-              <p className="kicker text-blue-600" style={sizeStyle(fs, `${base}.groupsLabel`)}>
-                {entity.groupsLabel}
-              </p>
-              <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
-                {entity.poles.map((pole, poleIndex) => {
-                  const Icon = poleIcons[pole.name] ?? Package;
-                  const poleBase = `${base}.poles.${poleIndex}`;
-                  return (
-                    <div
-                      key={pole.name}
-                      className={`flex w-full flex-col rounded-2xl ${cardBorder} bg-paper p-8 text-left shadow-sm transition-shadow hover:shadow-md ${cardWidthClass(entity.poles!.length)}`}
-                    >
-                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
-                        <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
-                      </div>
-                      <h3
-                        className="font-display mt-6 text-xl text-navy-950"
-                        style={sizeStyle(fs, `${poleBase}.name`)}
-                      >
-                        {pole.name}
-                      </h3>
-                      <p
-                        className="mt-3 text-sm leading-relaxed text-ink-soft"
-                        style={sizeStyle(fs, `${poleBase}.description`)}
-                      >
-                        {pole.description}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      )}
-
-      {(() => {
-        const filteredGroups = entity.groups
-          .map((g, i) => ({ ...g, originalIndex: i }))
-          .filter((g) => g.title !== "Modalités");
-        if (filteredGroups.length === 0) return null;
+      {entity.sectionOrder.map((entry) => {
+        if (entry.kind === "fixed") {
+          return <Fragment key={entry.key}>{fixedSections[entry.key]}</Fragment>;
+        }
+        const section = entity.sections.find((s) => s.id === entry.id);
+        if (!section) return null;
         return (
-        <section className="border-y border-hairline bg-paper-dim">
-          <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
-            <Reveal className="text-center">
-              <p className="kicker text-blue-600" style={sizeStyle(fs, `${base}.groupsLabel`)}>
-                {entity.groupsLabel}
-              </p>
-              <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-6">
-                {filteredGroups.map((group) => {
-                    const Icon = groupIcons[group.title] ?? Package;
-                    const groupBase = `${base}.groups.${group.originalIndex}`;
-                    return (
-                      <div
-                        key={group.title}
-                        className={`flex w-full flex-col rounded-2xl ${cardBorder} bg-paper p-8 text-left shadow-sm transition-shadow hover:shadow-md ${cardWidthClass(filteredGroups.length)}`}
-                      >
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
-                          <Icon className="h-6 w-6 text-navy-800" strokeWidth={1.75} />
-                        </div>
-                        <h3
-                          className="font-display mt-6 text-xl text-navy-950"
-                          style={sizeStyle(fs, `${groupBase}.title`)}
-                        >
-                          {group.title}
-                        </h3>
-                        <ul className="mt-5 space-y-4">
-                          {group.items.map((item, itemIndex) => {
-                            const itemBase = `${groupBase}.items.${itemIndex}`;
-                            return (
-                              <li key={item.label}>
-                                <p
-                                  className="text-sm font-semibold text-navy-900"
-                                  style={sizeStyle(fs, `${itemBase}.label`)}
-                                >
-                                  {item.label}
-                                </p>
-                                <p
-                                  className="mt-1 text-sm leading-relaxed text-ink-soft"
-                                  style={sizeStyle(fs, `${itemBase}.description`)}
-                                >
-                                  {item.description}
-                                </p>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    );
-                  })}
-              </div>
-            </Reveal>
-          </div>
-        </section>
+          <CustomSections
+            key={entry.id}
+            sections={[section]}
+            fieldSizes={fs}
+            keyPrefix={`${base}.sections`}
+          />
         );
-      })()}
-
-      {/* Synergy callout, echoing the original doc's blue box */}
-      <section className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
-        <Reveal className="border border-blue-600/30 bg-blue-100 p-8 sm:p-10">
-          <p className="kicker text-navy-800">Synergie CFConsulting</p>
-          <p
-            className="mt-4 text-base leading-relaxed text-navy-900"
-            style={sizeStyle(fs, `${base}.synergy`)}
-          >
-            {entity.synergy}
-          </p>
-        </Reveal>
-      </section>
-
-      <CustomSections
-        sections={entity.sections}
-        fieldSizes={fs}
-        keyPrefix={`${base}.sections`}
-      />
+      })}
 
       {/* Prev / next */}
       <section className="border-t border-hairline">
