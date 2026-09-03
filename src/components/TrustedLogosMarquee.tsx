@@ -30,8 +30,13 @@ export default function TrustedLogosMarquee({
           </h2>
         </div>
 
-        <div className="relative mt-6 overflow-hidden bg-paper [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-          <div className="marquee-track flex w-max items-center gap-16">
+        <div className="relative mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          {/* bg-paper lives here (not just on the wrapper above) because the
+              scrolling `transform` on this element creates its own stacking
+              context — mix-blend-mode on its children only blends against
+              what's painted inside that same context, so the background has
+              to be right here for a white logo background to disappear. */}
+          <div className="marquee-track flex w-max items-center gap-16 bg-paper">
             {repeated.map((logo, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
