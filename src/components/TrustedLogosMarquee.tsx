@@ -30,7 +30,7 @@ export default function TrustedLogosMarquee({
           </h2>
         </div>
 
-        <div className="relative mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+        <div className="relative mt-6 overflow-hidden bg-paper [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <div className="marquee-track flex w-max items-center gap-16">
             {repeated.map((logo, i) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -38,7 +38,7 @@ export default function TrustedLogosMarquee({
                 key={`${logo.id}-${i}`}
                 src={logo.image}
                 alt={logo.alt}
-                className="w-auto shrink-0 object-contain"
+                className="w-auto shrink-0 object-contain mix-blend-multiply"
                 style={{ height: `${3 * (logo.scale || 1)}rem` }}
               />
             ))}
