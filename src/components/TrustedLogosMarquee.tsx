@@ -18,7 +18,7 @@ export default function TrustedLogosMarquee({
   const doubled = [...logos, ...logos];
 
   return (
-    <section className="py-20">
+    <section className="py-12">
       <Reveal>
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
           <h2
