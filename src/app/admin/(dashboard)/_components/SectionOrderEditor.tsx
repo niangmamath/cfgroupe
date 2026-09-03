@@ -5,6 +5,8 @@ import type { SectionOrderEntry, CustomSection } from "@/lib/content-types";
 const FIXED_LABELS: Record<string, string> = {
   hero: "Héro",
   poles: "Nos pôles",
+  presence: "Présence (carte)",
+  trustedLogos: "Ils nous font confiance (logos)",
   filConducteur: "Le fil conducteur",
   contact: "Contact",
   groups: "Groupes / pôles internes",

@@ -1,6 +1,6 @@
 import { put, head } from "@vercel/blob";
 import { unstable_noStore as noStore } from "next/cache";
-import type { SiteContent, SiteTheme } from "./content-types";
+import type { SiteContent, SiteTheme, SectionOrderEntry } from "./content-types";
 import { defaultContent } from "./default-content";
 import { defaultTheme } from "./default-theme";
 
@@ -54,7 +54,30 @@ export async function getContent(): Promise<SiteContent> {
   merged.hero = { ...defaultContent.hero, ...stored.hero };
   // content saved before `sections`/`sectionOrder`/`homeSections` existed won't have them
   merged.homeSections = merged.homeSections ?? [];
+  merged.presence = merged.presence ?? defaultContent.presence;
+  merged.trustedSection = merged.trustedSection ?? defaultContent.trustedSection;
   merged.homeSectionOrder = merged.homeSectionOrder ?? defaultContent.homeSectionOrder;
+  // content saved before "presence"/"trustedLogos" existed won't have them in the
+  // order list yet — append them (before "contact" if present) rather than reset
+  const existingFixedKeys = new Set(
+    merged.homeSectionOrder.filter((e) => e.kind === "fixed").map((e) => e.key)
+  );
+  const missingFixed: SectionOrderEntry[] = (["presence", "trustedLogos"] as const)
+    .filter((key) => !existingFixedKeys.has(key))
+    .map((key) => ({ kind: "fixed" as const, key }));
+  if (missingFixed.length > 0) {
+    const contactIdx = merged.homeSectionOrder.findIndex(
+      (e) => e.kind === "fixed" && e.key === "contact"
+    );
+    merged.homeSectionOrder =
+      contactIdx >= 0
+        ? [
+            ...merged.homeSectionOrder.slice(0, contactIdx),
+            ...missingFixed,
+            ...merged.homeSectionOrder.slice(contactIdx),
+          ]
+        : [...merged.homeSectionOrder, ...missingFixed];
+  }
   merged.entities = merged.entities.map((e) => ({
     ...e,
     sections: e.sections ?? [],

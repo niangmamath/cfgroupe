@@ -6,6 +6,8 @@ import { Field, TextAreaField, SectionCard, SaveBar } from "../_components/FormC
 import { MediaUpload } from "../_components/MediaUpload";
 import { SectionsEditor } from "../_components/SectionsEditor";
 import { SectionOrderEditor } from "../_components/SectionOrderEditor";
+import { PresenceMapEditor } from "../_components/PresenceMapEditor";
+import { TrustedLogosEditor } from "../_components/TrustedLogosEditor";
 import type { CustomSection } from "@/lib/content-types";
 
 export default function AdminContentPage() {
@@ -346,6 +348,52 @@ export default function AdminContentPage() {
               onSizeChange={(v) => setSize("contact.phone", v)}
             />
           </div>
+        </SectionCard>
+
+        <SectionCard title="Présence (carte du monde)">
+          <PresenceMapEditor
+            title={content.presence.title}
+            onTitleChange={(v) =>
+              setContent({ ...content, presence: { ...content.presence, title: v } })
+            }
+            backgroundImage={content.presence.backgroundImage}
+            onBackgroundChange={(url) =>
+              setContent({
+                ...content,
+                presence: { ...content.presence, backgroundImage: url },
+              })
+            }
+            locations={content.presence.locations}
+            onLocationsChange={(next) =>
+              setContent({ ...content, presence: { ...content.presence, locations: next } })
+            }
+          />
+        </SectionCard>
+
+        <SectionCard title="Ils nous font confiance (logos partenaires)">
+          <TrustedLogosEditor
+            title={content.trustedSection.title}
+            onTitleChange={(v) =>
+              setContent({
+                ...content,
+                trustedSection: { ...content.trustedSection, title: v },
+              })
+            }
+            subtitle={content.trustedSection.subtitle}
+            onSubtitleChange={(v) =>
+              setContent({
+                ...content,
+                trustedSection: { ...content.trustedSection, subtitle: v },
+              })
+            }
+            logos={content.trustedSection.logos}
+            onLogosChange={(next) =>
+              setContent({
+                ...content,
+                trustedSection: { ...content.trustedSection, logos: next },
+              })
+            }
+          />
         </SectionCard>
 
         <SectionCard title="Footer">

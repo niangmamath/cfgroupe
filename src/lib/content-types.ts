@@ -12,8 +12,29 @@ export type CustomSection = {
   mediaPublished: boolean;
 };
 
-export type HomeFixedSectionKey = "hero" | "poles" | "filConducteur" | "contact";
+export type HomeFixedSectionKey =
+  | "hero"
+  | "poles"
+  | "presence"
+  | "trustedLogos"
+  | "filConducteur"
+  | "contact";
 export type EntityFixedSectionKey = "groups" | "synergy";
+
+export type PresenceLocation = {
+  id: string;
+  city: string;
+  year: string;
+  xPercent: number;
+  yPercent: number;
+  color: string;
+};
+
+export type TrustedLogo = {
+  id: string;
+  image: string;
+  alt: string;
+};
 
 export type SectionOrderEntry =
   | { kind: "fixed"; key: HomeFixedSectionKey | EntityFixedSectionKey }
@@ -68,6 +89,16 @@ export type SiteContent = {
   footer: {
     tagline: string;
     copyrightName: string;
+  };
+  presence: {
+    title: string;
+    backgroundImage: string | null;
+    locations: PresenceLocation[];
+  };
+  trustedSection: {
+    title: string;
+    subtitle: string;
+    logos: TrustedLogo[];
   };
   homeSections: CustomSection[];
   homeSectionOrder: SectionOrderEntry[];

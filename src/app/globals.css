@@ -104,3 +104,20 @@ body {
   background-image: radial-gradient(circle at 1px 1px, rgba(18, 24, 31, 0.06) 1px, transparent 0);
   background-size: 22px 22px;
 }
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}

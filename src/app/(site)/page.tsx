@@ -6,11 +6,22 @@ import Reveal from "@/components/Reveal";
 import PoleCard from "@/components/PoleCard";
 import HeroWaves from "@/components/HeroWaves";
 import CustomSections from "@/components/CustomSections";
+import PresenceMap from "@/components/PresenceMap";
+import TrustedLogosMarquee from "@/components/TrustedLogosMarquee";
 
 export default async function Home() {
   const [content, theme] = await Promise.all([getContent(), getTheme()]);
-  const { hero, polesSection, filConducteur, contact, entities, homeSections, homeSectionOrder } =
-    content;
+  const {
+    hero,
+    polesSection,
+    filConducteur,
+    contact,
+    entities,
+    homeSections,
+    homeSectionOrder,
+    presence,
+    trustedSection,
+  } = content;
   const fs = theme.typography.fieldSizes;
   const hasMedia =
     hero.mediaPublished !== false && Boolean(hero.backgroundImage || hero.backgroundVideo);
@@ -206,6 +217,24 @@ export default async function Home() {
   const fixedSections: Record<string, React.ReactNode> = {
     hero: heroSection,
     poles: polesGridSection,
+    presence: (
+      <PresenceMap
+        key="presence"
+        title={presence.title}
+        backgroundImage={presence.backgroundImage}
+        locations={presence.locations}
+        fieldSizes={fs}
+      />
+    ),
+    trustedLogos: (
+      <TrustedLogosMarquee
+        key="trustedLogos"
+        title={trustedSection.title}
+        subtitle={trustedSection.subtitle}
+        logos={trustedSection.logos}
+        fieldSizes={fs}
+      />
+    ),
     filConducteur: filConducteurSection,
     contact: contactSection,
   };
