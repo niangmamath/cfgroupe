@@ -43,7 +43,7 @@ export default function TrustedLogosMarquee({
                 key={`${logo.id}-${i}`}
                 src={logo.image}
                 alt={logo.alt}
-                className="h-12 w-auto shrink-0 object-contain grayscale opacity-70 transition-opacity hover:opacity-100 hover:grayscale-0"
+                className="h-12 w-auto shrink-0 object-contain"
               />
             ))}
           </div>
