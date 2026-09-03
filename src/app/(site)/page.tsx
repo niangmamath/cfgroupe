@@ -230,7 +230,6 @@ export default async function Home() {
       <TrustedLogosMarquee
         key="trustedLogos"
         title={trustedSection.title}
-        subtitle={trustedSection.subtitle}
         logos={trustedSection.logos}
         fieldSizes={fs}
       />

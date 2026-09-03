@@ -2,20 +2,16 @@
 
 import { useRef, useState } from "react";
 import type { TrustedLogo } from "@/lib/content-types";
-import { Field, TextAreaField } from "./FormControls";
+import { Field } from "./FormControls";
 
 export function TrustedLogosEditor({
   title,
   onTitleChange,
-  subtitle,
-  onSubtitleChange,
   logos,
   onLogosChange,
 }: {
   title: string;
   onTitleChange: (v: string) => void;
-  subtitle: string;
-  onSubtitleChange: (v: string) => void;
   logos: TrustedLogo[];
   onLogosChange: (next: TrustedLogo[]) => void;
 }) {
@@ -63,7 +59,6 @@ export function TrustedLogosEditor({
   return (
     <div className="space-y-4">
       <Field label="Titre" value={title} onChange={onTitleChange} />
-      <TextAreaField label="Sous-titre" value={subtitle} onChange={onSubtitleChange} rows={2} />
 
       <div className="space-y-3">
         {logos.map((logo, i) => (

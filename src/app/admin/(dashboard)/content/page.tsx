@@ -379,13 +379,6 @@ export default function AdminContentPage() {
                 trustedSection: { ...content.trustedSection, title: v },
               })
             }
-            subtitle={content.trustedSection.subtitle}
-            onSubtitleChange={(v) =>
-              setContent({
-                ...content,
-                trustedSection: { ...content.trustedSection, subtitle: v },
-              })
-            }
             logos={content.trustedSection.logos}
             onLogosChange={(next) =>
               setContent({
