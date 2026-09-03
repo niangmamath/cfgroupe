@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import type { SiteContent, SiteTheme, Entity, Group, Pole } from "@/lib/content-types";
 import { Field, TextAreaField, SectionCard, SaveBar } from "../../_components/FormControls";
+import { SectionsEditor } from "../../_components/SectionsEditor";
 
 export default function AdminEntityEditPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -345,6 +346,25 @@ export default function AdminEntityEditPage() {
             </div>
           </SectionCard>
         )}
+      </div>
+
+      <div className="mt-10">
+        <h2 className="font-display text-2xl text-navy-950">
+          Sections personnalisées (page de ce pôle)
+        </h2>
+        <p className="mt-2 text-ink-soft">
+          S&apos;affichent sur la page &laquo; {entity.name} &raquo;, après la
+          synergie et avant la navigation précédent/suivant.
+        </p>
+        <div className="mt-6">
+          <SectionsEditor
+            sections={entity.sections}
+            onChange={(next) => updateEntity({ sections: next })}
+            keyPrefix={`${base}.sections`}
+            sizeOf={sizeOf}
+            onSizeChange={setSize}
+          />
+        </div>
       </div>
 
       <SaveBar onSave={handleSave} saving={saving} status={status} />

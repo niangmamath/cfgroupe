@@ -18,6 +18,7 @@ import { getEntity, getAdjacentEntities } from "@/lib/entities";
 import { getContent, getTheme } from "@/lib/store";
 import { sizeStyle } from "@/lib/typography";
 import Reveal from "@/components/Reveal";
+import CustomSections from "@/components/CustomSections";
 
 export const dynamic = "force-dynamic";
 
@@ -221,6 +222,12 @@ export default async function EntityPage({
           </p>
         </Reveal>
       </section>
+
+      <CustomSections
+        sections={entity.sections}
+        fieldSizes={fs}
+        keyPrefix={`${base}.sections`}
+      />
 
       {/* Prev / next */}
       <section className="border-t border-hairline">

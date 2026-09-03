@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { SiteContent, SiteTheme } from "@/lib/content-types";
 import { Field, TextAreaField, SectionCard, SaveBar } from "../_components/FormControls";
 import { MediaUpload } from "../_components/MediaUpload";
+import { SectionsEditor } from "../_components/SectionsEditor";
 
 export default function AdminContentPage() {
   const [content, setContent] = useState<SiteContent | null>(null);
@@ -326,6 +327,25 @@ export default function AdminContentPage() {
             onSizeChange={(v) => setSize("footer.copyrightName", v)}
           />
         </SectionCard>
+      </div>
+
+      <div className="mt-10">
+        <h2 className="font-display text-2xl text-navy-950">
+          Sections personnalisées (page d&apos;accueil)
+        </h2>
+        <p className="mt-2 text-ink-soft">
+          S&apos;affichent entre &laquo; Le fil conducteur &raquo; et
+          &laquo; Contact &raquo;, dans l&apos;ordre choisi ci-dessous.
+        </p>
+        <div className="mt-6">
+          <SectionsEditor
+            sections={content.homeSections}
+            onChange={(next) => setContent({ ...content, homeSections: next })}
+            keyPrefix="homeSections"
+            sizeOf={sizeOf}
+            onSizeChange={setSize}
+          />
+        </div>
       </div>
 
       <SaveBar onSave={handleSave} saving={saving} status={status} />

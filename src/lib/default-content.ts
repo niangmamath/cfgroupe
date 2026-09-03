@@ -38,6 +38,7 @@ export const defaultContent: SiteContent = {
       "Toute la chaîne de valeur digitale, de la stratégie à l'exécution, à travers quatre pôles complémentaires.",
     copyrightName: "CFConsulting",
   },
+  homeSections: [],
   entities: [
     {
       slug: "cfconsulting",
@@ -51,6 +52,7 @@ export const defaultContent: SiteContent = {
       synergy:
         "CFConsulting est le point d'entrée stratégique sur la plupart des missions. Il alimente directement l'exécution du pôle CFSolutions, l'adoption des produits CFSoft dans le secteur bancaire, et le déploiement des solutions CFTech dans les secteurs en diversification.",
       groupsLabel: "Modes d'intervention",
+      sections: [],
       groups: [
         {
           title: "Missions",
@@ -121,6 +123,7 @@ export const defaultContent: SiteContent = {
       synergy:
         "CFSolutions absorbe la complexité que le pôle CFConsulting a cadrée en amont, ou répond directement à un besoin client sans passage préalable. C'est le pôle qui rend crédible la promesse de bout en bout de CFConsulting.",
       groupsLabel: "Domaines & modalités",
+      sections: [],
       groups: [
         {
           title: "Prestations",
@@ -202,6 +205,7 @@ export const defaultContent: SiteContent = {
       synergy:
         "Cohérence directe avec l'ADN bancaire de CFConsulting — un client accompagné sur sa transformation digitale peut adopter les produits CFSoft plutôt que redévelopper ces briques via le pôle CFSolutions.",
       groupsLabel: "Produits & déploiement",
+      sections: [],
       groups: [
         {
           title: "Produits",
@@ -263,6 +267,7 @@ export const defaultContent: SiteContent = {
       synergy:
         "CFTech incarne concrètement la diversification sectorielle portée par CFConsulting, en apportant des produits déjà adaptés aux contraintes réglementaires et métier de la santé, de l'éducation et de la finance.",
       groupsLabel: "Trois pôles produits",
+      sections: [],
       groups: [],
       poles: [
         {

@@ -2,6 +2,15 @@ export type GroupItem = { label: string; description: string };
 export type Group = { title: string; items: GroupItem[] };
 export type Pole = { name: string; description: string };
 
+export type CustomSection = {
+  id: string;
+  title: string;
+  text: string;
+  image: string | null;
+  video: string | null;
+  mediaPosition: "left" | "right";
+};
+
 export type Entity = {
   slug: string;
   number: string;
@@ -14,6 +23,7 @@ export type Entity = {
   groupsLabel: string;
   groups: Group[];
   poles?: Pole[];
+  sections: CustomSection[];
 };
 
 export type SiteContent = {
@@ -49,6 +59,7 @@ export type SiteContent = {
     tagline: string;
     copyrightName: string;
   };
+  homeSections: CustomSection[];
   entities: Entity[];
 };
 

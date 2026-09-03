@@ -49,7 +49,11 @@ export async function getContent(): Promise<SiteContent> {
   const stored = await readJson<Partial<SiteContent>>(CONTENT_PATH);
   if (!stored) return defaultContent;
   // shallow-merge top-level keys so newly-added fields still get defaults
-  return { ...defaultContent, ...stored };
+  const merged = { ...defaultContent, ...stored };
+  // content saved before `sections`/`homeSections` existed won't have them
+  merged.homeSections = merged.homeSections ?? [];
+  merged.entities = merged.entities.map((e) => ({ ...e, sections: e.sections ?? [] }));
+  return merged;
 }
 
 export async function getTheme(): Promise<SiteTheme> {

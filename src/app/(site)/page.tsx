@@ -5,10 +5,11 @@ import { sizeStyle } from "@/lib/typography";
 import Reveal from "@/components/Reveal";
 import PoleCard from "@/components/PoleCard";
 import HeroWaves from "@/components/HeroWaves";
+import CustomSections from "@/components/CustomSections";
 
 export default async function Home() {
   const [content, theme] = await Promise.all([getContent(), getTheme()]);
-  const { hero, polesSection, filConducteur, contact, entities } = content;
+  const { hero, polesSection, filConducteur, contact, entities, homeSections } = content;
   const fs = theme.typography.fieldSizes;
   const hasMedia = Boolean(hero.backgroundImage || hero.backgroundVideo);
 
@@ -140,6 +141,8 @@ export default async function Home() {
           </Reveal>
         </div>
       </section>
+
+      <CustomSections sections={homeSections} fieldSizes={fs} keyPrefix="homeSections" />
 
       {/* Contact */}
       <section id="contact" className="relative overflow-hidden bg-contact-blue scroll-mt-24">
