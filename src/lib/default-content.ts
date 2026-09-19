@@ -82,6 +82,7 @@ export const defaultContent: SiteContent = {
     subtitle: "Nos références et partenaires (liste non exhaustive)",
     logos: [],
   },
+  favicon: null,
   homeSections: [],
   homeSectionOrder: [
     { kind: "fixed", key: "hero" },

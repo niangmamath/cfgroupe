@@ -389,6 +389,15 @@ export default function AdminContentPage() {
           />
         </SectionCard>
 
+        <SectionCard title="Favicon du site">
+          <MediaUpload
+            label="Icône affichée dans l'onglet du navigateur (PNG, SVG ou ICO, carré de préférence)"
+            imageUrl={content.favicon}
+            videoUrl={null}
+            onChange={({ image }) => setContent({ ...content, favicon: image })}
+          />
+        </SectionCard>
+
         <SectionCard title="Footer">
           <TextAreaField
             label="Texte de présentation"

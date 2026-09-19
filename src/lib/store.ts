@@ -54,6 +54,7 @@ export async function getContent(): Promise<SiteContent> {
   merged.hero = { ...defaultContent.hero, ...stored.hero };
   // content saved before `sections`/`sectionOrder`/`homeSections` existed won't have them
   merged.homeSections = merged.homeSections ?? [];
+  merged.favicon = merged.favicon ?? null;
   merged.presence = merged.presence ?? defaultContent.presence;
   merged.trustedSection = merged.trustedSection ?? defaultContent.trustedSection;
   merged.homeSectionOrder = merged.homeSectionOrder ?? defaultContent.homeSectionOrder;

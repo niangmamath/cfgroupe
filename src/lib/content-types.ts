@@ -101,6 +101,7 @@ export type SiteContent = {
     subtitle: string;
     logos: TrustedLogo[];
   };
+  favicon: string | null;
   homeSections: CustomSection[];
   homeSectionOrder: SectionOrderEntry[];
   entities: Entity[];
